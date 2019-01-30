@@ -62,9 +62,9 @@ class Tts extends NativeEventEmitter {
       }
     } else {
       if (Platform.OS === 'ios') {
-        return TextToSpeech.speak(utterance, options.iosVoiceId);
+        return TextToSpeech.speak(utterance, options.iosVoiceId, options.hasOwnProperty("delay")?options.delay:0);
       } else {
-        return TextToSpeech.speak(utterance, options.androidParams || {});
+        return TextToSpeech.speak(utterance, options.androidParams || {}, options.hasOwnProperty("delay")?options.delay:0);
       }
     }
   }

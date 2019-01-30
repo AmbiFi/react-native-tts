@@ -147,7 +147,7 @@ public class TextToSpeechModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void speak(String utterance, ReadableMap params, Promise promise) {
+    public void speak(String utterance, ReadableMap params, float delay, Promise promise) {
         if(notReady(promise)) return;
 
         if(ducking) {
@@ -167,6 +167,12 @@ public class TextToSpeechModule extends ReactContextBaseJavaModule {
         String utteranceId = Integer.toString(utterance.hashCode());
 
         int speakResult = speak(utterance, utteranceId, params);
+
+        if (delay > 0) {
+            long newDelay = (long)(delay * 1000);
+            int silenceResult = tts.playSilence(newDelay, TextToSpeech.QUEUE_ADD, null);
+        }
+
         if(speakResult == TextToSpeech.SUCCESS) {
             promise.resolve(utteranceId);
         } else {

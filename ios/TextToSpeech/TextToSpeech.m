@@ -42,6 +42,7 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(speak:(NSString *)text
                   voice:(NSString *)voice
+                    delay:(nonnull NSNumber *)delay
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -52,6 +53,11 @@ RCT_EXPORT_METHOD(speak:(NSString *)text
     
     AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
 
+    if (delay > 0) {
+        double xDelay = [delay doubleValue]; 
+        utterance.postUtteranceDelay = xDelay;
+    }
+    
     if(voice) {
         utterance.voice = [AVSpeechSynthesisVoice voiceWithIdentifier:voice];
     } else if (_defaultVoice) {
