@@ -7,6 +7,7 @@ React Native TTS is a text-to-speech library for [React Native](https://facebook
 - [Install](#install)
 - [Usage](#usage)
 - [License](#license)
+- [Example project](#example)
 
 ## Install
 
@@ -148,6 +149,37 @@ Tts.addEventListener('tts-start', (event) => console.log("start", event));
 Tts.addEventListener('tts-finish', (event) => console.log("finish", event));
 Tts.addEventListener('tts-cancel', (event) => console.log("cancel", event));
 ```
+
+### Install (additional) language data
+
+Shows the Android Activity to install additional language/voice data.
+
+```js
+Tts.requestInstallData();
+```
+
+## Troubleshooting
+
+### No text to speech engine installed on Android
+
+On Android, it may happen that the Text-to-Speech engine is not (yet) installed on the phone.
+When this is the case, `Tts.getInitStatus()` returns an error with code `no_engine`.
+You can use the following code to request the installation of the default Google Text to Speech App.
+The app will need to be restarted afterwards before the changes take affect.
+
+```js
+Tts.getInitStatus().then(() => {
+  // ...
+}, (err) => {
+  if (err.code === 'no_engine') {
+    Tts.requestInstallEngine();
+  }
+});
+```
+
+## Example
+
+There is an example project which shows use of react-native-tts on Android/iOS: https://github.com/themostaza/react-native-tts-example
 
 ## License
 
